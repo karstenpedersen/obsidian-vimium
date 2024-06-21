@@ -3,7 +3,7 @@
 	"name": "Vimium",
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
-	"description": "Vimium for Obsidian",
+	"description": "Click elements using keyboard shortcuts in the spirit of Vim",
 	"author": "Karsten Finderup Pedersen",
 	"isDesktopOnly": true
 }

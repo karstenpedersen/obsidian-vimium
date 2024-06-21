@@ -18,18 +18,18 @@ export function updateMarkerText(marker: MarkerData, input = "") {
 	createMarkerText(marker.text, marker.el, input);
 }
 
-export function createMarkerEl(text: string, written: string, x: number, y: number): HTMLElement {
+export function createMarkerEl(text: string, input: string, x: number, y: number): HTMLElement {
 	const markerEl = createSpan()
 	markerEl.addClass("vimium-marker");
 	markerEl.setCssProps({
 		"--top": `${y}px`, 
 		"--left": `${x}px`,
 	});
-	createMarkerText(text, markerEl);
+	createMarkerText(text, markerEl, input);
 	return markerEl;
 }
 
-export function createMarker(text: string, parentEl: HTMLElement, written = ""): MarkerData | null {
+export function createMarker(text: string, parentEl: HTMLElement, input = ""): MarkerData | null {
 	const rect = parentEl.getBoundingClientRect();
 
 	if (rect.width === 0 || rect.height === 0) {
@@ -37,7 +37,7 @@ export function createMarker(text: string, parentEl: HTMLElement, written = ""):
 	}
 
 	const data: MarkerData = {
-		el: createMarkerEl(text, written, rect.left, rect.top),
+		el: createMarkerEl(text, input, rect.left, rect.top),
 		parentEl,
 		text
 	};
