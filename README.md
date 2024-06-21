@@ -22,7 +22,7 @@ Inspired by [Vimium](https://chromewebstore.google.com/detail/vimium/dbepggeogba
 2.  Go to "Community Plugins".
 3.  Enable community plugins by pressing "Turn on community plugins".
 4.  Click "Browse" to browse available community plugins.
-5.  Search for "Advanced Random Note".
+5.  Search for "Vimium".
 6.  Click Install and enable the plugin.
 7.  Close the community plugins window.
 
