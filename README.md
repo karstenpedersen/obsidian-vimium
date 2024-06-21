@@ -6,7 +6,7 @@ Inspired by [Vimium](https://chromewebstore.google.com/detail/vimium/dbepggeogba
 
 ## Features
 
-- `Vimium: Show markers`: Shows Vimium markers on clickable elements.
+- `Vimium: Show markers`: Show Vimium markers on clickable elements.
 
 ## Showcase
 
