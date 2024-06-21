@@ -7,6 +7,7 @@ export const CLICKABLE_SELECTOR_LIST = [
 	".empty-state-action",
 	".workspace-tab-header-inner-close-button",
 	".menu-item",
+	".workspace-drawer-vault-switcher",
 	// Canvas
 	".canvas-control-item",
 	".canvas-card-menu-button",

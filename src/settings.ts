@@ -4,18 +4,12 @@ import Vimium from "./main";
 
 export interface VimiumSettings {
 	clickableCssSelector: string;
-	markerOpacity: number;
-	markerBackgroundColor: string;
-	markerColor: string;
 	markerSize: number;
 }
 
 export const DEFAULT_SETTINGS: VimiumSettings = {
 	clickableCssSelector: CLICKABLE_SELECTOR,
-	markerOpacity: 1,
 	markerSize: 12,
-	markerBackgroundColor: "#FFFF00",
-	markerColor: "#000000"
 }
 
 export class VimiumSettingTab extends PluginSettingTab {
@@ -46,49 +40,6 @@ export class VimiumSettingTab extends PluginSettingTab {
 				}));
 
 		new Setting(containerEl)
-			.setName('Marker color')
-			.setDesc('The text color of markers.')
-			.addColorPicker(component => component
-				.setValue(this.plugin.settings.markerColor)
-				.onChange(async (value) => {
-					this.plugin.settings.markerColor = value;
-					await this.plugin.saveSettings();
-				}));
-
-		new Setting(containerEl)
-			.setName('Marker background color')
-			.setDesc('The background color of markers.')
-			.addColorPicker(component => component
-				.setValue(this.plugin.settings.markerBackgroundColor)
-				.onChange(async (value) => {
-					this.plugin.settings.markerBackgroundColor = value;
-					await this.plugin.saveSettings();
-				}));
-
-		new Setting(containerEl)
-			.setName('Marker opacity')
-			.setDesc('The opacity of markers.')
-			.addSlider(slider => slider
-				.setValue(this.plugin.settings.markerOpacity)
-				.setLimits(10, 100, 5)
-				.onChange(async (value) => {
-					this.plugin.settings.markerOpacity = value / 100;
-					await this.plugin.saveSettings();
-				}));
-
-		new ButtonComponent(containerEl)
-			.setButtonText("Reset style")
-			.setTooltip("Reset marker styles")
-			.onClick(async () => {
-				this.plugin.settings.markerOpacity = DEFAULT_SETTINGS.markerOpacity * 100;
-				this.plugin.settings.markerColor = DEFAULT_SETTINGS.markerColor;
-				this.plugin.settings.markerBackgroundColor = DEFAULT_SETTINGS.markerBackgroundColor;
-				this.plugin.settings.markerSize = DEFAULT_SETTINGS.markerSize;
-				await this.plugin.saveSettings();
-				this.display()
-			});
-
-		new Setting(containerEl)
 			.setName('Clickable CSS selector')
 			.setDesc('Used for selecting clickable HTML elements.')
 			.addTextArea(text => text
@@ -98,5 +49,14 @@ export class VimiumSettingTab extends PluginSettingTab {
 					this.plugin.settings.clickableCssSelector = value;
 					await this.plugin.saveSettings();
 				}));
+
+		new ButtonComponent(containerEl)
+			.setButtonText("Reset")
+			.setTooltip("Reset settings")
+			.onClick(async () => {
+				this.plugin.settings.clickableCssSelector = CLICKABLE_SELECTOR;
+				await this.plugin.saveSettings();
+				this.display();
+			});
 	}
 }

@@ -1,14 +1,31 @@
 import { MarkerData } from "./types";
 
+export function createMarkerText(text: string, markerEl: HTMLElement, input = "") {
+	Array.from(text).forEach((char, index) => {
+		const charEl = createSpan();
+		charEl.setText(char.toUpperCase());
+		if (input.length >= index && char === input[index]) {
+			charEl.addClass("vimium-marker-char-match");
+		}
+		markerEl.appendChild(charEl);
+	});
+}
+
+export function updateMarkerText(marker: MarkerData, input = "") {
+	while (marker.el.firstChild) {
+		marker.el.removeChild(marker.el.firstChild);
+	}
+	createMarkerText(marker.text, marker.el, input);
+}
+
 export function createMarkerEl(text: string, written: string, x: number, y: number): HTMLElement {
 	const markerEl = createSpan()
 	markerEl.addClass("vimium-marker");
-	markerEl.setText(text);
-	markerEl.setAttr("data-written", written);
 	markerEl.setCssProps({
 		"--top": `${y}px`, 
 		"--left": `${x}px`,
 	});
+	createMarkerText(text, markerEl);
 	return markerEl;
 }
 

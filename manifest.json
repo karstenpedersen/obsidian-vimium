@@ -4,8 +4,6 @@
 	"version": "1.0.0",
 	"minAppVersion": "0.15.0",
 	"description": "Vimium for Obsidian",
-	"author": "Obsidian",
-	"authorUrl": "https://obsidian.md",
-	"fundingUrl": "https://obsidian.md/pricing",
-	"isDesktopOnly": false
+	"author": "Karsten Finderup Pedersen",
+	"isDesktopOnly": true
 }

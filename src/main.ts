@@ -2,7 +2,7 @@ import { Plugin } from 'obsidian';
 import { DEFAULT_SETTINGS, VimiumSettings, VimiumSettingTab } from './settings';
 import tlds from './tlds';
 import { MarkerData } from './types';
-import { createMarker, findMarkerMatch } from './utils';
+import { createMarker, findMarkerMatch, updateMarkerText } from './utils';
 
 export default class Vimium extends Plugin {
 	settings: VimiumSettings;
@@ -16,7 +16,7 @@ export default class Vimium extends Plugin {
 
 		this.addCommand({
 			id: 'show-markers',
-			name: 'Show Vimium Markers',
+			name: 'Show markers',
 			callback: () => {
 				if (this.showMarkers) {
 					this.destroyMarkers();
@@ -31,7 +31,7 @@ export default class Vimium extends Plugin {
 			if (!this.showMarkers) {
 				return;
 			}
-			
+
 			if (event.key === "Escape") {
 				this.showMarkers = false;
 				this.input = "";
@@ -43,13 +43,17 @@ export default class Vimium extends Plugin {
 				this.input = this.input.slice(0, -1);
 				this.updateMarkers();
 			} else if (event.key.length === 1 && event.key.match(/[a-zA-Z]/)) {
-				this.input += event.key;
+				this.input += event.key.toLowerCase();
 
 				const result = findMarkerMatch(this.input, this.markers);
 				if (result) {
-					// Click element
+					// Interact with element
 					const clickableEl = result.parentEl;
-					clickableEl.click();
+					if (clickableEl.getAttribute('contenteditable') === 'true') {
+						clickableEl.focus();
+					} else {
+						clickableEl.click();
+					}
 
 					// Reset
 					this.showMarkers = false;
@@ -59,8 +63,18 @@ export default class Vimium extends Plugin {
 					this.updateMarkers();
 				}
 			}
-			
+
 			event.preventDefault();
+		});
+
+		this.registerDomEvent(document, "mousedown", () => {
+			if (!this.showMarkers) {
+				return;
+			}
+
+			this.showMarkers = false;
+			this.input = "";
+			this.destroyMarkers();
 		});
 
 		this.registerEvent(this.app.workspace.on("resize", () => {
@@ -83,50 +97,43 @@ export default class Vimium extends Plugin {
 		const containerInnerEl = createDiv();
 		containerInnerEl.addClass("vimium-container-inner");
 		this.containerEl.appendChild(containerInnerEl);
-
 		this.containerEl.setCssProps({
 			"--marker-size": `${this.settings.markerSize}px`,
 			"--marker-color": this.settings.markerColor,
 			"--marker-background-color": this.settings.markerBackgroundColor,
 			"--marker-opacity": `${this.settings.markerOpacity}`,
 		});
-		
+
 		// Create markers
-		for (let i = 0; i < clickableElements.length; i++) {
+		for (let i = 0; i < Math.min(clickableElements.length, tlds.length); i++) {
 			const clickableEl = clickableElements[i] as HTMLElement;
-
 			const text = tlds[i];
-			const markerData = createMarker(text, clickableEl, this.input);
-			if (!markerData) {
-				continue;
+			const marker = createMarker(text, clickableEl, this.input);
+			if (marker) {
+				this.markers.push(marker);
+				containerInnerEl.appendChild(marker.el);
 			}
-
-			this.markers.push(markerData);
-			containerInnerEl.appendChild(markerData.el);
 		}
 	}
 
 	updateMarkers() {
 		for (const marker of this.markers) {
-			marker.el.setAttr("data-written", this.input);
 			const rect = marker.parentEl.getBoundingClientRect();
 			marker.el.setCssProps({
-				"--top": `${rect.top}px`, 
+				"--top": `${rect.top}px`,
 				"--left": `${rect.left}px`,
 				display: marker.text.startsWith(this.input) ? "block" : "none"
 			});
+			updateMarkerText(marker, this.input);
 		}
 	}
 
 	destroyMarkers() {
-		// Delete markers
-		for (const marker of this.markers) {
-			marker.el.parentNode?.removeChild(marker.el);
-		}
-		this.markers = [];
-
 		// Remove parent container
 		this.containerEl.parentNode?.removeChild(this.containerEl);
+
+		// Delete markers
+		this.markers = [];
 	}
 
 	async loadSettings() {

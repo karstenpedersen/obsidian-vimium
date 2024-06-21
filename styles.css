@@ -11,24 +11,20 @@
 }
 
 .vimium-marker {
-	--actual-color: var(--marker-color, --color-base-00, #000000);
-	--actual-background-color: var(--marker-background-color, --color-yellow, #FFFF00);
 	position: fixed;
 	top: var(--top);
 	left: var(--left);
 	color: var(--actual-color);
-	background: var(--actual-background-color);
+	background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#FFF785), color-stop(100%,#FFC542));
+	border: 1px solid #E3BE23;
 	padding: 1px 2px;
 	border-radius: 3px;
 	font-size: var(--marker-size, 12);
 	opacity: var(--marker-opacity, 1);
+	font-weight: 600;
+	color: #000000;
 }
 
-.vimium-marker::after {
-	content: attr(data-written);
-	position: absolute;
-	inset: 0;
-	padding: 1px 2px;
-	font-size: var(--marker-size, 12);
-	color: var(--actual-background-color);
+.vimium-marker-char-match {
+	color: #D4AC3A;
 }
