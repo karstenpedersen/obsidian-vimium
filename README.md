@@ -6,7 +6,9 @@ Inspired by [Vimium](https://chromewebstore.google.com/detail/vimium/dbepggeogba
 
 ## Features
 
-- `Vimium: Show markers`: Show Vimium markers on clickable elements.
+- `Vimium: Show markers`: Show Vimium markers on clickable elements. Then press the respected keys for what element you want to click.
+- Edit what CSS selectors are used to query clickable elements.
+- Change font size of markers.
 
 ## Showcase
 
