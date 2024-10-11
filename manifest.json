@@ -1,7 +1,7 @@
 {
 	"id": "vimium",
 	"name": "Vimium",
-	"version": "1.0.6",
+	"version": "1.0.7",
 	"minAppVersion": "0.15.0",
 	"description": "Interact with elements using keyboard shortcuts in the spirit of Vim",
 	"author": "Karsten Finderup Pedersen",

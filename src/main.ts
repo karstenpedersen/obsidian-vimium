@@ -99,13 +99,15 @@ export default class Vimium extends Plugin {
 
 		this.scrollInterval = setInterval(() => {
 			const activeLeaf = this.app.workspace.activeLeaf;
-			const activeView = activeLeaf.view;
 
-			if (activeView && activeView.getViewType() === 'markdown') {
-				const previewEl = activeView.containerEl.querySelector('.markdown-preview-view');
-				if (previewEl) {
-					const scrollDelta = direction === 'down' ? this.scrollAmount : -this.scrollAmount;
-					previewEl.scrollBy(0, scrollDelta);
+			if (activeLeaf) {
+				const activeView = activeLeaf.view;
+				if (activeView && activeView.getViewType() === 'markdown') {
+					const previewEl = activeView.containerEl.querySelector('.markdown-preview-view');
+					if (previewEl) {
+						const scrollDelta = direction === 'down' ? this.scrollAmount : -this.scrollAmount;
+						previewEl.scrollBy(0, scrollDelta);
+					}
 				}
 			}
 		}, this.scrollSpeed);
