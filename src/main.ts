@@ -10,6 +10,9 @@ export default class Vimium extends Plugin {
 	markers: MarkerData[] = [];
 	containerEl: HTMLElement;
 	input = "";
+	scrollInterval: NodeJS.Timeout | null = null;
+	scrollAmount = 50; // Amount to scroll each interval
+	scrollSpeed = 50; // Milliseconds between scrolls
 
 	async onload() {
 		await this.loadSettings();
@@ -26,6 +29,9 @@ export default class Vimium extends Plugin {
 				this.createMarkers();
 			}
 		});
+
+		this.registerDomEvent(document, "keydown", (event: KeyboardEvent) => this.handleKeyDown(event));
+		this.registerDomEvent(document, "keyup", (event: KeyboardEvent) => this.handleKeyUp(event));
 
 		this.registerDomEvent(document, "keydown", (event: KeyboardEvent) => {
 			if (!this.showMarkers) {
@@ -86,6 +92,47 @@ export default class Vimium extends Plugin {
 		this.addSettingTab(new VimiumSettingTab(this.app, this));
 	}
 
+
+
+	startScrolling(direction: 'up' | 'down') {
+		if (this.scrollInterval) return; // Prevent multiple intervals
+
+		this.scrollInterval = setInterval(() => {
+			const activeLeaf = this.app.workspace.activeLeaf;
+			const activeView = activeLeaf.view;
+
+			if (activeView && activeView.getViewType() === 'markdown') {
+				const previewEl = activeView.containerEl.querySelector('.markdown-preview-view');
+				if (previewEl) {
+					const scrollDelta = direction === 'down' ? this.scrollAmount : -this.scrollAmount;
+					previewEl.scrollBy(0, scrollDelta);
+				}
+			}
+		}, this.scrollSpeed);
+	}
+
+	stopScrolling() {
+		if (this.scrollInterval) {
+			clearInterval(this.scrollInterval);
+			this.scrollInterval = null; // Reset the interval
+		}
+	}
+
+	handleKeyDown(event: KeyboardEvent) {
+		if (event.key === 'j') {
+			this.startScrolling('down');
+		}
+		if (event.key === 'k') {
+			this.startScrolling('up');
+		}
+	}
+	
+	handleKeyUp(event: KeyboardEvent) {
+		if (event.key === 'j' || event.key === 'k') {
+			this.stopScrolling();
+		}
+	}
+
 	createMarkers() {
 		// Select clickable elements
 		const clickableElements = document.querySelectorAll(this.settings.clickableCssSelector);
@@ -143,5 +190,11 @@ export default class Vimium extends Plugin {
 	async saveSettings() {
 		await this.saveData(this.settings);
 	}
+
+	async onunload() {
+		document.removeEventListener('keydown', this.handleKeyDown);
+		document.removeEventListener('keyup', this.handleKeyUp);
+	}
+	
 }
 

@@ -58,3 +58,5 @@ export function findMarkerMatch(text: string, markers: MarkerData[]): MarkerData
 export function intToLetters(num: number) {
 	return String.fromCharCode(97 + (num % 26));
 }
+
+
