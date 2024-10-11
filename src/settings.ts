@@ -5,11 +5,17 @@ import Vimium from "./main";
 export interface VimiumSettings {
 	clickableCssSelector: string;
 	markerSize: number;
+	markerColor:string;
+	markerBackgroundColor:string;
+	markerOpacity:number;
 }
 
 export const DEFAULT_SETTINGS: VimiumSettings = {
 	clickableCssSelector: CLICKABLE_SELECTOR,
 	markerSize: 12,
+	markerColor: "yellow",
+	markerBackgroundColor: "blue",
+	markerOpacity: 100,
 }
 
 export class VimiumSettingTab extends PluginSettingTab {
