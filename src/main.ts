@@ -2,7 +2,7 @@ import { Plugin } from 'obsidian';
 import { DEFAULT_SETTINGS, VimiumSettings, VimiumSettingTab } from './settings';
 import tlds from './tlds';
 import { MarkerData } from './types';
-import { createMarker, findMarkerMatch, updateMarkerText } from './utils';
+import { createMarker, findMarkerMatch, isMarkerMatchAt, updateMarkerText } from './utils';
 
 export default class Vimium extends Plugin {
 	settings: VimiumSettings;
@@ -60,7 +60,14 @@ export default class Vimium extends Plugin {
 					this.destroyMarkers();
 					this.input = "";
 				} else {
-					this.updateMarkers();
+					if (isMarkerMatchAt(this.input, this.markers, this.input.length - 1)) {
+						this.updateMarkers();
+					}
+					else {
+						this.showMarkers = false;
+						this.destroyMarkers();
+						this.input = "";
+					}
 				}
 			}
 

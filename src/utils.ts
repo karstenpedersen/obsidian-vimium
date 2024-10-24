@@ -55,6 +55,16 @@ export function findMarkerMatch(text: string, markers: MarkerData[]): MarkerData
 	return null;
 }
 
+export function isMarkerMatchAt(key: string, markers: MarkerData[], index: number): boolean {
+	for (const marker of markers) {
+		if (key === marker.text[index]) {
+			return true;
+		}
+	}
+
+	return false;
+}
+
 export function intToLetters(num: number) {
 	return String.fromCharCode(97 + (num % 26));
 }
