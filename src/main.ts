@@ -59,15 +59,12 @@ export default class Vimium extends Plugin {
 					this.showMarkers = false;
 					this.destroyMarkers();
 					this.input = "";
+				} else if (isMarkerMatchAt(this.input, this.markers, this.input.length - 1)) {
+					this.updateMarkers();
 				} else {
-					if (isMarkerMatchAt(this.input, this.markers, this.input.length - 1)) {
-						this.updateMarkers();
-					}
-					else {
-						this.showMarkers = false;
-						this.destroyMarkers();
-						this.input = "";
-					}
+					this.showMarkers = false;
+					this.destroyMarkers();
+					this.input = "";
 				}
 			}
 
