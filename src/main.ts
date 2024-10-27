@@ -32,16 +32,13 @@ export default class Vimium extends Plugin {
 				return;
 			}
 
-			if (event.key === "Escape") {
+			if (this.input !== "" && event.key === "Backspace") {
+				this.input = this.input.slice(0, -1);
+				this.updateMarkers();
+			} else if (event.key === "Backspace" || event.key === "Escape") {
 				this.showMarkers = false;
 				this.input = "";
 				this.destroyMarkers();
-			} else if (event.key === "Backspace") {
-				if (this.input === "") {
-					return;
-				}
-				this.input = this.input.slice(0, -1);
-				this.updateMarkers();
 			} else if (event.key.length === 1 && event.key.match(/[a-zA-Z]/)) {
 				this.input += event.key.toLowerCase();
 
