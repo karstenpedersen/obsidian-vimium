@@ -35,8 +35,7 @@ export default class Vimium extends Plugin {
 			if (this.input !== "" && event.key === "Backspace") {
 				this.input = this.input.slice(0, -1);
 				this.updateMarkers();
-			}
-			else if (event.key === "Backspace" || event.key === "Escape") {
+			} else if (event.key === "Backspace" || event.key === "Escape") {
 				this.showMarkers = false;
 				this.input = "";
 				this.destroyMarkers();
