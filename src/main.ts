@@ -99,9 +99,6 @@ export default class Vimium extends Plugin {
 		this.containerEl.appendChild(containerInnerEl);
 		this.containerEl.setCssProps({
 			"--marker-size": `${this.settings.markerSize}px`,
-			"--marker-color": this.settings.markerColor,
-			"--marker-background-color": this.settings.markerBackgroundColor,
-			"--marker-opacity": `${this.settings.markerOpacity}`,
 		});
 
 		// Create markers
